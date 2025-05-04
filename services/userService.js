@@ -38,7 +38,7 @@ const createUser = async (userData) => {
     await newUser.save()
 
     //  Envoyer l'email avec le lien d’activation
-    const activationLink = `${process.env.CLIENT_URL}/activate-account/${activationToken}`
+    const activationLink = `${process.env.CLIENT_URL}/api/v1/users/activate-account/${activationToken}`
     await transporter.sendMail({
       to: newUser.email,
       from: process.env.EMAIL_USER,

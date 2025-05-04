@@ -345,9 +345,9 @@ exports.cancelReservationStatus = asyncHandler(async (req, res) => {
 
 exports.getReservationHistory = asyncHandler(async (req, res) => {
   try {
-    if (req.user.role !== 'manager') {
-      return res.status(403).json({ success: false, message: 'Unothorized' })
-    }
+    // if (req.user.role !== 'manager') {
+    //   return res.status(403).json({ success: false, message: 'Unothorized' })
+    // }
     const { startDate, endDate } = req.query
     if (!startDate || !endDate) {
       return res.status(400).json({
@@ -364,7 +364,7 @@ exports.getReservationHistory = asyncHandler(async (req, res) => {
       .populate({ path: 'client', select: 'firstName lastName email' })
       .populate({ path: 'voyage', select: 'name category price' })
       .sort({ createdAt: -1 })
-
+    console.log(reservations)
     res.status(200).json({
       success: true,
       count: reservations.length,

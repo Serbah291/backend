@@ -4,9 +4,9 @@ const ReviewModel = require('../models/ReviewModel') // Vérifie bien que le fic
 
 // Fonction pour créer un voyage
 exports.createVoyage = asyncHandler(async (req, res) => {
-  if (req.user.role !== 'admin') {
-    return res.status(403).json({ success: false, message: 'Accès refusé' })
-  }
+  // if (req.user.role !== 'admin') {
+  //   return res.status(403).json({ success: false, message: 'Accès refusé' })
+  // }
 
   const {
     name,
@@ -150,7 +150,7 @@ exports.getVoyageById = asyncHandler(async (req, res) => {
   })
 })
 exports.updateVoyage = asyncHandler(async (req, res) => {
-  if (req.user.role !== 'admin') {
+  if (req.user.role !== 'manager') {
     return res.status(403).json({ success: false, message: 'Accès refusé' })
   }
 
