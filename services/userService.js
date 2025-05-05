@@ -118,6 +118,7 @@ const loginUser = async (email, password) => {
       email: user.email,
       profilePicture: user.profilePicture,
       createdAt: user.createdAt,
+      role: user.role,
       token,
     }
   } catch (error) {
