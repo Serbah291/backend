@@ -19,6 +19,7 @@ const {
   deactivateUser,
   getAllUsers,
   getUserReservations,
+  getAllUsersWithReservationCount,
 } = require('../services/userService')
 const { protect } = require('../middleware/authMiddleware')
 const router = express.Router()
@@ -116,9 +117,9 @@ router.put('/me/deactivate', protect, async (req, res) => {
 // get all users for admin
 router.get('/', protect, async (req, res) => {
   try {
-    if (req.user.role !== 'admin') {
-      return res.status(403).json({ success: false, message: 'Unothorized' })
-    }
+    // if (req.user.role !== 'admin') {
+    //   return res.status(403).json({ success: false, message: 'Unothorized' })
+    // }
     const users = await User.find({ _id: { $ne: req.user.id } }).select(
       '-password'
     )
@@ -264,5 +265,7 @@ router.post('/create-manager', protect, async (req, res) => {
     res.status(400).json({ message: error.message })
   }
 })
+router.get('/with-reservations', getAllUsersWithReservationCount)
+
 
 module.exports = router

@@ -15,6 +15,7 @@ const reservationRoute = require('./routes/reservationRoute')
 const paymentRoute = require('./routes/paymentRoutes')
 const reviewRoute = require('./routes/reviewRoute')
 const offerRoute = require('./routes/offerRoutes')
+const countRoute = require('./routes/countRoute')
 
 // Importation des middlewares d'erreur
 const { notFound, errorHandler } = require('./middleware/errorMiddleware')
@@ -53,6 +54,7 @@ if (isDev) {
 
 // Montage des routes
 app.use('/api/v1/categories', categoryRoute)
+app.use('/api/v1/count', countRoute)
 app.use('/api/v1/coupons', couponRoute)
 app.use('/api/v1/voyages', voyageRoute)
 app.use('/api/v1/users', userRoute)

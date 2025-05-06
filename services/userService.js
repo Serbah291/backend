@@ -371,7 +371,43 @@ const getUserReservations = async (userId) => {
     throw error
   }
 }
+const getAllUsersWithReservationCount = async (req, res) => {
+  try {
+    // Step 1: Count reservations per user
+    const reservationStats = await Reservation.aggregate([
+      {
+        $group: {
+          _id: '$client',
+          reservationCount: { $sum: 1 },
+        },
+      },
+    ])
 
+    // Step 2: Convert to map { userId: count }
+    const countMap = {}
+    reservationStats.forEach(stat => {
+      countMap[stat._id.toString()] = stat.reservationCount
+    })
+
+    // Step 3: Get all users (without passwords)
+    const users = await User.find().select('-password')
+
+    // Step 4: Merge reservationCount into each user
+    const usersWithCount = users.map(user => {
+      return {
+        ...user.toObject(),
+        reservationCount: countMap[user._id.toString()] || 0,
+        message: 'User fetched successfully',
+        success: true,
+      }
+    })
+    console.log('liuheqroygwfq',usersWithCount)
+    res.status(200).json(usersWithCount)
+  } catch (error) {
+    console.error('Error fetching users with reservation count:', error)
+    res.status(500).json({ message: 'Internal server error' })
+  }
+}
 module.exports = {
   createUser,
   getUserInfo,
@@ -390,4 +426,5 @@ module.exports = {
   deleteManager,
   getAllUsers,
   getUserReservations,
+  getAllUsersWithReservationCount,
 }

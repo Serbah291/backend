@@ -288,9 +288,9 @@ exports.deleteReservation = asyncHandler(async (req, res) => {
 })
 
 exports.confirmReservationStatus = asyncHandler(async (req, res) => {
-  if (req.user.role !== 'admin') {
-    return res.status(403).json({ success: false, message: 'Unothorized' })
-  }
+  // if (req.user.role !== 'admin') {
+  //   return res.status(403).json({ success: false, message: 'Unothorized' })
+  // }
   const { reservationId } = req.body
   if (!reservationId) {
     return res
@@ -316,9 +316,9 @@ exports.confirmReservationStatus = asyncHandler(async (req, res) => {
 })
 
 exports.cancelReservationStatus = asyncHandler(async (req, res) => {
-  if (req.user.role !== 'admin') {
-    return res.status(403).json({ success: false, message: 'Unothorized' })
-  }
+  // if (req.user.role !== 'admin') {
+  //   return res.status(403).json({ success: false, message: 'Unothorized' })
+  // }
   const { reservationId } = req.body
   if (!reservationId) {
     return res
