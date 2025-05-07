@@ -363,12 +363,17 @@ const getAllUsers = async () => {
 
 const getUserReservations = async (userId) => {
   try {
-    const reservations = await Reservation.find({ client: userId }).sort({
-      createdAt: -1,
-    })
-    return reservations
+    const reservations = await Reservation.find({ client: userId })
+      .sort({ createdAt: -1 })
+      .populate({
+        path: 'voyage',
+        select: 'name' // Only include the name field from Voyage
+      })
+      .lean(); // Convert to plain JavaScript objects
+    
+    return reservations;
   } catch (error) {
-    throw error
+    throw error;
   }
 }
 const getAllUsersWithReservationCount = async (req, res) => {
