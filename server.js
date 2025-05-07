@@ -16,6 +16,7 @@ const paymentRoute = require('./routes/paymentRoutes')
 const reviewRoute = require('./routes/reviewRoute')
 const offerRoute = require('./routes/offerRoutes')
 const countRoute = require('./routes/countRoute')
+const testRoute = require('./routes/testRoute')
 
 // Importation des middlewares d'erreur
 const { notFound, errorHandler } = require('./middleware/errorMiddleware')
@@ -62,6 +63,7 @@ app.use('/api/v1/reservations', reservationRoute)
 app.use('/api/v1/payments', paymentRoute)
 app.use('/api/v1/reviews', reviewRoute)
 app.use('/api/v1/offers', offerRoute)
+app.use('/api/v1/test', testRoute)
 // Route par défaut
 app.get('/', (req, res) => {
   res.send(' API is running...')

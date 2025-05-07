@@ -389,9 +389,9 @@ exports.cancelReservationStatus = asyncHandler(async (req, res) => {
 
 exports.getReservationHistory = asyncHandler(async (req, res) => {
   try {
-    if (req.user.role !== 'manager') {
-      return res.status(403).json({ success: false, message: 'Unothorized' })
-    }
+    // if (req.user.role !== 'manager') {
+    //   return res.status(403).json({ success: false, message: 'Unothorized' })
+    // }
     const { startDate, endDate } = req.query
     console.log(startDate, endDate)
     if (!startDate || !endDate) {
