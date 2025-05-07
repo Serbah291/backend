@@ -61,6 +61,50 @@ exports.createReservation = asyncHandler(async (req, res) => {
 
 // Fonction pour récupérer toutes les réservations (accessible par l'admin)
 //Invoke-RestMethod -Uri "http://localhost:9000/api/v1/reservations" -Method Get | ConvertTo-Json -Depth 10
+exports.getReservationById = asyncHandler(async (req, res) => {
+  const { reservationId } = req.params
+  // Vérifier si l'ID est valide
+  if (!mongoose.Types.ObjectId.isValid(reservationId)) {
+    return res
+      .status(400)
+      .json({ success: false, message: 'ID de réservation invalide' })
+  }
+  // Vérifier si la réservation existe
+  const reservation = await Reservation.findById(
+    reservationId
+  )
+  if (!reservation) {
+    return res
+      .status(404)
+      .json({ success: false, message: 'Réservation non trouvée' })
+  }
+  // Vérifier que l'utilisateur est bien celui qui a effectué la réservation
+  // (Si l'utilisateur est stocké dans `req.user` après authentification)
+  if (req.user && reservation.client.toString() !== req.user._id.toString()) {
+    return res.status(403).json({
+      success: false,
+      message: "Vous n'avez pas le droit de voir cette réservation",
+    })
+  }
+  // Récupérer les détails de la réservation
+  const reservationDetails = await Reservation.findById(reservation
+    ._id)
+    .populate({ path: 'client', select: 'firstName lastName email' }) // Afficher les infos du client
+    .populate({ path: 'voyage', select: 'name category price' }) // Afficher les infos du voyage
+    .lean() // Permet d'obtenir des objets JSON purs
+  console.log(
+    'Réservation avec populate :',
+    JSON.stringify(reservationDetails, null, 2)
+  ) // Affichage propre
+  res.status(200).json({
+    success: true,
+    data: reservationDetails,
+  })
+  // res.status(200).json({ success: true, data: reservation })
+})
+// Récupérer toutes les réservations
+
+
 
 exports.getAllReservations = asyncHandler(async (req, res) => {
   try {
@@ -345,10 +389,11 @@ exports.cancelReservationStatus = asyncHandler(async (req, res) => {
 
 exports.getReservationHistory = asyncHandler(async (req, res) => {
   try {
-    // if (req.user.role !== 'manager') {
-    //   return res.status(403).json({ success: false, message: 'Unothorized' })
-    // }
+    if (req.user.role !== 'manager') {
+      return res.status(403).json({ success: false, message: 'Unothorized' })
+    }
     const { startDate, endDate } = req.query
+    console.log(startDate, endDate)
     if (!startDate || !endDate) {
       return res.status(400).json({
         success: false,

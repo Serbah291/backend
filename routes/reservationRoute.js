@@ -12,11 +12,12 @@ const {
   confirmReservationStatus,
   cancelReservationStatus,
   getReservationHistory,
+  getReservationById,
 } = require('../services/reservationService')
 const { protect } = require('../middleware/authMiddleware')
 
 router.post('/', protect, createReservation) // Route pour ajouter une réservation
-
+router.get('/:reservationId', protect, getReservationById) // Route pour récupérer une réservation par ID
 // Route pour récupérer toutes les réservations (GET)
 router.get('/', getAllReservations)
 

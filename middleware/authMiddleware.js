@@ -11,6 +11,7 @@ exports.protect = asyncHandler(async (req, res, next) => {
         try {
             // Récupérer le token
             token = req.headers.authorization.split(" ")[1];
+            console.log(token)
 
             if (!token) {
                 return res.status(401).json({ message: "Accès non autorisé, aucun token fourni" });
@@ -21,6 +22,7 @@ exports.protect = asyncHandler(async (req, res, next) => {
 
             // Ajouter l'utilisateur à req.user (sans le mot de passe)
             req.user = await UserModel.findById(decoded.id).select("-password");
+            console.log(req.user.role)
 
             if (!req.user) {
                 return res.status(401).json({ message: "Utilisateur introuvable, accès refusé" });

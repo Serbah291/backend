@@ -30,6 +30,7 @@ router.get('/reservations', protect, async (req, res) => {
     const userId = req.user.id
     const reservations = await getUserReservations(userId)
     res.status(200).json(reservations)
+    console.log(reservations)
   } catch (error) {
     res.status(400).json({ message: error.message })
   }
@@ -117,9 +118,9 @@ router.put('/me/deactivate', protect, async (req, res) => {
 // get all users for admin
 router.get('/', protect, async (req, res) => {
   try {
-    // if (req.user.role !== 'admin') {
-    //   return res.status(403).json({ success: false, message: 'Unothorized' })
-    // }
+    if (req.user.role !== 'admin') {
+      return res.status(403).json({ success: false, message: 'Unothorized' })
+    }
     const users = await User.find({ _id: { $ne: req.user.id } }).select(
       '-password'
     )
@@ -256,9 +257,9 @@ router.post('/reset-password', async (req, res) => {
 // Route to create a manager
 router.post('/create-manager', protect, async (req, res) => {
   try {
-    if (req.user.role !== 'admin') {
-      return res.status(403).json({ success: false, message: 'Unothorized' })
-    }
+    // if (req.user.role !== 'admin') {
+    //   return res.status(403).json({ success: false, message: 'Unothorized' })
+    // }
     const result = await createManager(req.body)
     res.status(201).json(result)
   } catch (error) {

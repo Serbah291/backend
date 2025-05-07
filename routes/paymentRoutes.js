@@ -4,6 +4,6 @@ const { createPaymentIntent } = require('../services/paymentService') // Import 
 
 const router = express.Router() // create a new router  object
 
-//router.post('/create-payment-intent', createPaymentIntent);
+router.post('/create-payment-intent', createPaymentIntent);
 
 module.exports = router // export the router object
