@@ -113,6 +113,7 @@ const loginUser = async (email, password) => {
 
     // Ne pas renvoyer le mot de passe
     return {
+      id: user._id,
       firstName: user.firstName,
       lastName: user.lastName,
       email: user.email,
