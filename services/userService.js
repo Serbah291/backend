@@ -186,6 +186,7 @@ const deleteUser = async (email, password) => {
 const changePassword = async (email, oldPassword, newPassword) => {
   try {
     const user = await User.findOne({ email })
+    console.log(email , oldPassword, newPassword)
 
     if (!user) {
       throw new Error('User not found.')
