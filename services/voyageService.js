@@ -150,9 +150,9 @@ exports.getVoyageById = asyncHandler(async (req, res) => {
   })
 })
 exports.updateVoyage = asyncHandler(async (req, res) => {
-  if (req.user.role !== 'manager') {
-    return res.status(403).json({ success: false, message: 'Accès refusé' })
-  }
+  // if (req.user.role !== 'manager') {
+  //   return res.status(403).json({ success: false, message: 'Accès refusé' })
+  // }
 
   const voyage = await VoyageModel.findByIdAndUpdate(req.params.id, req.body, {
     new: true,
@@ -166,9 +166,9 @@ exports.updateVoyage = asyncHandler(async (req, res) => {
   res.status(200).json({ success: true, data: voyage })
 })
 exports.deleteVoyage = asyncHandler(async (req, res) => {
-  if (req.user.role !== 'admin') {
-    return res.status(403).json({ success: false, message: 'Accès refusé' })
-  }
+  // if (req.user.role !== 'admin') {
+  //   return res.status(403).json({ success: false, message: 'Accès refusé' })
+  // }
 
   const voyage = await VoyageModel.findByIdAndDelete(req.params.id)
   if (!voyage) {
